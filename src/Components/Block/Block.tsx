@@ -1,4 +1,4 @@
-import React, {forwardRef, ReactNode, useMemo} from 'react';
+import React, {forwardRef, memo, ReactNode, useMemo} from 'react';
 import {Platform, View, ViewProps, ViewStyle} from 'react-native';
 import {VARIANT} from 'src/Modules/ThemeModule/Types/CommonTypes';
 import useThemeValue from 'src/Modules/ThemeModule/Hooks/useThemeValue';
@@ -63,4 +63,4 @@ function Block(
   );
 }
 
-export default forwardRef(Block);
+export default memo(forwardRef(Block));

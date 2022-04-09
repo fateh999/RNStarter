@@ -1,4 +1,5 @@
-import React, {Fragment, useCallback, useMemo, useRef, useState} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {Fragment, useMemo, useState} from 'react';
 import {
   ControllerRenderProps,
   FieldValues,
@@ -6,7 +7,6 @@ import {
 } from 'react-hook-form';
 import {
   Keyboard,
-  LayoutChangeEvent,
   Platform,
   Pressable,
   StyleSheet,
@@ -15,10 +15,16 @@ import {
   View,
 } from 'react-native';
 import Typography from 'src/Components/Typography/Typography';
-import Menu, {MenuDivider, MenuItem} from 'react-native-material-menu';
 import {SELECT_OPTIONS} from 'src/Utils/Types';
 import useThemeValue from 'src/Modules/ThemeModule/Hooks/useThemeValue';
 import Block from 'src/Components/Block/Block';
+import Touch from '../Touch/Touch';
+import ReactNativeModal from 'react-native-modal';
+import SafeAreaBlock from '../SafeAreaBlock/SafeAreaBlock';
+import Body from '../Body/Body';
+import IconButton from '../IconButton/IconButton';
+import scaler from 'src/Utils/scaler';
+import InputLabel from '../InputLabel/InputLabel';
 
 type InputSelectProps = {
   label?: string;
@@ -44,131 +50,138 @@ function InputSelect(props: InputSelectProps) {
     ? theme.colors.error
     : focus
     ? theme.colors.primary
-    : theme.colors.placeholder;
+    : theme.colors.primary;
   const textColor = errorMessage ? theme.colors.error : theme.colors.text;
-  const borderWidth = focus || errorMessage ? 2 : 1;
-  const menuRef = useRef<any>();
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
+  const borderWidth = focus || errorMessage ? scaler(2) : scaler(1);
+  const [visible, setVisible] = useState(false);
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
         textInputStyle: {
-          fontSize: 16,
-          paddingHorizontal: 10,
+          fontSize: scaler(15),
+          paddingHorizontal: scaler(15),
           paddingBottom: Platform.OS === 'ios' ? 8.3 / 2 : 0,
           paddingVertical: Platform.OS === 'ios' ? 8.3 / 2 : 0,
           color: textColor,
           textAlignVertical: 'center',
-        },
-        menuStyle: {
-          minWidth: width,
-          width: width,
-          backgroundColor: theme.colors.surface,
-          borderRadius: 0,
-          marginTop: height,
-          shadowOpacity: 0.0015 * 10 + 0.18,
-          shadowRadius: 0.54 * 10,
-          shadowOffset: {
-            height: 0.6 * 10,
-            width: 0.6 * 10,
-          },
-          shadowColor: theme.colors.onSurface,
-          elevation: 5,
+          ...theme.fonts.medium,
         },
       }),
-    [height, textColor, theme.colors.onSurface, theme.colors.surface, width],
+    [textColor, theme.fonts.medium],
   );
-
-  const onLayout = useCallback((event: LayoutChangeEvent) => {
-    const {width: _width, height: _height} = event.nativeEvent.layout;
-    setWidth(_width);
-    setHeight(_height);
-  }, []);
 
   return (
     <Fragment>
       {label && (
-        <Fragment>
-          <Typography type={'medium'} fontSize={16} color={labelColor}>
-            {label}
-          </Typography>
-          <Block height={8} />
-        </Fragment>
+        <InputLabel
+          label={label}
+          focus={focus || errorMessage || field.value}
+          labelColor={labelColor}
+        />
       )}
 
-      <Menu
-        ref={menuRef}
-        style={styles.menuStyle}
-        onHidden={() => {
-          setFocus(false);
-        }}
-        button={
-          <Pressable
-            onPress={() => {
-              menuRef.current?.show();
-              setFocus(true);
-            }}>
-            <View pointerEvents={'none'} onLayout={onLayout}>
-              <Block
-                flexDirection={'row'}
-                borderWidth={borderWidth}
-                borderColor={borderColor}
-                borderRadius={2}
-                overflow="hidden">
-                {left}
-                <Block paddingVertical={8} flex={1} justifyContent={'center'}>
-                  <TextInput
-                    ref={field.ref}
-                    {...textInputProps}
-                    value={
-                      options.find(({value}) => `${value}` === `${field.value}`)
-                        ?.label
-                    }
-                    onFocus={() => {
-                      Keyboard.dismiss();
-                      setFocus(true);
-                      menuRef.current?.show();
-                    }}
-                    placeholderTextColor={theme.colors.placeholder}
-                    style={[styles.textInputStyle, textInputProps?.style]}
-                  />
-                </Block>
-                {right}
-              </Block>
-            </View>
-          </Pressable>
-        }>
-        {options.map(({label: _label, value: _value}, _index) => {
-          return (
-            <Fragment key={_value}>
-              <MenuItem
-                style={{width, minWidth: width, maxWidth: width}}
-                onPress={() => {
-                  field.onChange(`${_value}`);
-                  menuRef.current?.hide();
+      <Pressable
+        onPress={() => {
+          setVisible(true);
+          setFocus(true);
+        }}>
+        <View pointerEvents={'none'}>
+          <Block
+            flexDirection={'row'}
+            borderWidth={borderWidth}
+            borderColor={borderColor}
+            borderRadius={scaler(12)}
+            height={scaler(56)}
+            variant={'surface'}
+            overflow="hidden">
+            {left}
+            <Block paddingVertical={8} flex={1} justifyContent={'center'}>
+              <TextInput
+                ref={field.ref}
+                {...textInputProps}
+                value={
+                  options.find(({value}) => `${value}` === `${field.value}`)
+                    ?.label
+                }
+                onFocus={() => {
+                  Keyboard.dismiss();
+                  setFocus(true);
+                  // menuRef.current?.show();
                 }}
-                textStyle={{
-                  color:
-                    `${_value}` === `${field.value}`
-                      ? theme.colors.primary
-                      : theme.colors.text,
-                }}>
-                {_label}
-              </MenuItem>
-              {_index < options.length - 1 && (
-                <MenuDivider color={theme.colors.divider} />
-              )}
-            </Fragment>
-          );
-        })}
-      </Menu>
+                placeholderTextColor={theme.colors.placeholder}
+                style={[styles.textInputStyle, textInputProps?.style]}
+              />
+            </Block>
+            {right}
+          </Block>
+        </View>
+      </Pressable>
+
       {errorMessage && (
         <Typography fontSize={12} color={borderColor}>
           {errorMessage}
         </Typography>
       )}
+
+      <ReactNativeModal
+        isVisible={visible}
+        onBackButtonPress={() => {
+          setVisible(false);
+        }}
+        onBackdropPress={() => {
+          setVisible(false);
+        }}
+        onModalShow={() => {
+          setFocus(true);
+        }}
+        onModalHide={() => {
+          setFocus(false);
+        }}
+        animationInTiming={500}
+        animationOutTiming={1000}
+        style={{margin: 0, justifyContent: 'flex-end'}}
+        useNativeDriver
+        hardwareAccelerated
+        useNativeDriverForBackdrop>
+        <SafeAreaBlock variant="surface" flex={1} maxHeight={scaler(250)}>
+          <Block flex={1} maxHeight={scaler(250)} variant={'surface'}>
+            <Typography fontSize={scaler(20)} margin={scaler(20)}>
+              Select {label}
+            </Typography>
+            <Body style={{height: scaler(250)}}>
+              {options.map(({label: _label, value: _value}, _index) => {
+                return (
+                  <Fragment key={_value}>
+                    <Touch
+                      height={scaler(50)}
+                      onPress={() => {
+                        field.onChange(_value);
+                        setVisible(false);
+                      }}>
+                      <Block
+                        height={scaler(50)}
+                        paddingHorizontal={scaler(20)}
+                        flexDirection={'row'}
+                        alignItems={'center'}
+                        justifyContent={'space-between'}>
+                        <Typography
+                          fontSize={scaler(15)}
+                          variant={_value === field.value ? 'primary' : 'text'}>
+                          {_label}
+                        </Typography>
+                        {_value === field.value && (
+                          <IconButton name="check" iconVariant={'primary'} />
+                        )}
+                      </Block>
+                    </Touch>
+                  </Fragment>
+                );
+              })}
+            </Body>
+          </Block>
+        </SafeAreaBlock>
+      </ReactNativeModal>
     </Fragment>
   );
 }

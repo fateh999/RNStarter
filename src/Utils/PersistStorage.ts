@@ -6,13 +6,14 @@ class PersistStorage {
   keyName;
   observer;
 
-  constructor(keyName: string, observer: BehaviorSubject<any>) {
+  constructor(keyName: string, observer: Readonly<BehaviorSubject<any>>) {
     this.keyName = keyName;
     this.observer = observer;
 
     if (keyName === 'authState') {
       RNBootSplash.hide({fade: true});
     }
+    console.log('PERSIST STORAGE INITIALIZED');
   }
 
   init = async () => {

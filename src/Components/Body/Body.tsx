@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {memo, useMemo} from 'react';
 import {StyleSheet} from 'react-native';
 import {
   KeyboardAwareScrollView,
@@ -41,4 +41,4 @@ function Body(props: BodyProps) {
   );
 }
 
-export default Body;
+export default memo(Body);

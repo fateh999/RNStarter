@@ -1,5 +1,5 @@
 import {useFocusEffect} from '@react-navigation/core';
-import React, {Fragment, useCallback} from 'react';
+import React, {Fragment, memo, useCallback} from 'react';
 import {Platform, StatusBar, StatusBarStyle} from 'react-native';
 import {VARIANT} from 'src/Modules/ThemeModule/Types/CommonTypes';
 import useThemeValue from 'src/Modules/ThemeModule/Hooks/useThemeValue';
@@ -70,4 +70,4 @@ function Container(props: ContainerProps) {
   );
 }
 
-export default Container;
+export default memo(Container);

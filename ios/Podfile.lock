@@ -371,11 +371,11 @@ PODS:
     - React-Core
   - RNDateTimePicker (5.0.1):
     - React-Core
-  - RNGestureHandler (1.10.3):
+  - RNGestureHandler (2.3.2):
     - React-Core
   - RNLocalize (2.1.6):
     - React-Core
-  - RNReanimated (2.3.1):
+  - RNReanimated (2.6.0):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -383,7 +383,6 @@ PODS:
     - RCT-Folly
     - RCTRequired
     - RCTTypeSafety
-    - React
     - React-callinvoker
     - React-Core
     - React-Core/DevSupport
@@ -645,9 +644,9 @@ SPEC CHECKSUMS:
   ReactCommon: 57b69f6383eafcbd7da625bfa6003810332313c4
   RNBootSplash: 51eef7e143faeab63f81ddbb7c1de38b8fba66ed
   RNDateTimePicker: d16386fda012db9e1fac5d2f8281a91254dfee99
-  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNGestureHandler: 6e757e487a4834e7280e98e9bac66d2d9c575e9c
   RNLocalize: f10d91c76a5692d4cf6f218c70f6e4d7dcb42d1c
-  RNReanimated: da3860204e5660c0dd66739936732197d359d753
+  RNReanimated: 8135778ca3fa9dd6cfdd74d0218106131394e2ec
   RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSnackbar: be3333a21a453ccc272f41a8add5a71f7d44dfcd
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
@@ -656,4 +655,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 61e50cee91a12a4a15460dafa53d8fdac0161f3a
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

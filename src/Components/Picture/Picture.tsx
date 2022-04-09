@@ -1,4 +1,4 @@
-import React, {forwardRef} from 'react';
+import React, {forwardRef, memo} from 'react';
 import {Image, ImageProps, ImageStyle} from 'react-native';
 
 type PictureProps = {} & ImageProps & ImageStyle;
@@ -53,4 +53,4 @@ function Picture(props: PictureProps, ref: React.LegacyRef<Image>) {
   );
 }
 
-export default forwardRef(Picture);
+export default memo(forwardRef(Picture));

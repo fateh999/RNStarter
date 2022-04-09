@@ -1,9 +1,11 @@
-import React, {forwardRef, useMemo} from 'react';
+import React, {forwardRef, memo, useMemo} from 'react';
 import {Platform, SafeAreaView, View, ViewProps, ViewStyle} from 'react-native';
-import {getVariantValue} from 'src/Modules/ThemeModule/Hooks/useThemeValue';
+import useThemeValue from 'src/Modules/ThemeModule/Hooks/useThemeValue';
+import {VARIANT} from 'src/Modules/ThemeModule/Types/CommonTypes';
 
 type SafeAreaBlockProps = {
   children?: any;
+  variant?: VARIANT;
 };
 
 function SafeAreaBlock(
@@ -17,8 +19,11 @@ function SafeAreaBlock(
     onLayout,
     pointerEvents,
     testID,
+    variant,
+    backgroundColor,
     ...styleProps
   } = props;
+  const theme = useThemeValue();
   const iosShadowElevation = useMemo(
     () =>
       elevation === 0
@@ -30,9 +35,9 @@ function SafeAreaBlock(
               height: 0.6 * elevation,
               width: 0.6 * elevation,
             },
-            shadowColor: getVariantValue('onSurface'),
+            shadowColor: theme.colors.onSurface,
           },
-    [elevation],
+    [elevation, theme.colors.onSurface],
   );
 
   return (
@@ -44,6 +49,13 @@ function SafeAreaBlock(
       style={[
         styleProps,
         Platform.OS === 'ios' ? {...iosShadowElevation} : {elevation},
+        {
+          backgroundColor: backgroundColor
+            ? backgroundColor
+            : variant
+            ? theme.colors[variant]
+            : theme.colors.transparent,
+        },
         style,
       ]}>
       {children}
@@ -51,4 +63,4 @@ function SafeAreaBlock(
   );
 }
 
-export default forwardRef(SafeAreaBlock);
+export default memo(forwardRef(SafeAreaBlock));

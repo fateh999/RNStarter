@@ -1,4 +1,4 @@
-import React, {Fragment, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   ControllerRenderProps,
   FieldValues,
@@ -17,6 +17,8 @@ import Typography from 'src/Components/Typography/Typography';
 import {SELECT_OPTIONS} from 'src/Utils/Types';
 import useThemeValue from 'src/Modules/ThemeModule/Hooks/useThemeValue';
 import Autocomplete from '../Autocomplete/Autocomplete';
+import scaler from 'src/Utils/scaler';
+import InputLabel from '../InputLabel/InputLabel';
 
 type InputAutocompleteProps = {
   label?: string;
@@ -46,27 +48,25 @@ function InputAutocomplete(props: InputAutocompleteProps) {
     () =>
       StyleSheet.create({
         textInputStyle: {
-          fontSize: 16,
-          paddingHorizontal: 10,
+          fontSize: scaler(15),
+          paddingHorizontal: scaler(15),
           paddingBottom: Platform.OS === 'ios' ? 8.3 / 2 : 0,
           paddingVertical: Platform.OS === 'ios' ? 8.3 / 2 : 0,
           color: textColor,
           textAlignVertical: 'center',
+          ...theme.fonts.medium,
         },
       }),
-    [textColor],
+    [textColor, theme.fonts.medium],
   );
 
   return (
-    <Fragment>
-      {label && (
-        <Fragment>
-          <Typography type={'medium'} fontSize={16} color={labelColor}>
-            {label}
-          </Typography>
-          <Block height={8} />
-        </Fragment>
-      )}
+    <Block>
+      <InputLabel
+        label={label}
+        focus={errorMessage || field.value}
+        labelColor={labelColor}
+      />
       <Pressable
         onPress={() => {
           setVisible(true);
@@ -76,10 +76,15 @@ function InputAutocomplete(props: InputAutocompleteProps) {
             flexDirection={'row'}
             borderWidth={borderWidth}
             borderColor={borderColor}
-            borderRadius={2}
+            borderRadius={scaler(12)}
+            minHeight={scaler(56)}
+            variant={'surface'}
             overflow="hidden">
             {left}
-            <Block paddingVertical={8} flex={1} justifyContent={'center'}>
+            <Block
+              paddingVertical={scaler(8)}
+              flex={1}
+              justifyContent={'center'}>
               <TextInput
                 ref={field.ref}
                 {...textInputProps}
@@ -104,11 +109,15 @@ function InputAutocomplete(props: InputAutocompleteProps) {
         field={field}
       />
       {errorMessage && (
-        <Typography fontSize={12} color={borderColor}>
+        <Typography
+          marginTop={scaler(5)}
+          marginHorizontal={scaler(15)}
+          fontSize={scaler(12)}
+          color={borderColor}>
           {errorMessage}
         </Typography>
       )}
-    </Fragment>
+    </Block>
   );
 }
 

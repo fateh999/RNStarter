@@ -38,8 +38,8 @@ persistQueryClient({
 });
 
 focusManager.setEventListener((handleFocus: any) => {
-  AppState.addEventListener('change', handleFocus);
+  const listener = AppState.addEventListener('change', handleFocus);
   return () => {
-    AppState.removeEventListener('change', handleFocus);
+    listener.remove();
   };
 });

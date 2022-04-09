@@ -1,4 +1,4 @@
-import React, {forwardRef, ReactNode} from 'react';
+import React, {forwardRef, memo, ReactNode} from 'react';
 import {Text, TextProps, TextStyle} from 'react-native';
 import useThemeValue from 'src/Modules/ThemeModule/Hooks/useThemeValue';
 import {VARIANT, FONT_TYPES} from 'src/Modules/ThemeModule/Types/CommonTypes';
@@ -87,4 +87,4 @@ function Typography(
   );
 }
 
-export default forwardRef(Typography);
+export default memo(forwardRef(Typography));

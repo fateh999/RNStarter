@@ -41,12 +41,18 @@ function RegisterForm() {
             name: 'name',
             type: 'text',
             label: 'Name',
+            textInputProps: {
+              placeholder: 'Enter Name',
+            },
             rules: getRequiredRules('Name'),
           },
           {
             name: 'email',
             type: 'email',
             label: 'Email',
+            textInputProps: {
+              placeholder: 'Enter Email',
+            },
             rules: getEmailValidationRules(),
           },
           {

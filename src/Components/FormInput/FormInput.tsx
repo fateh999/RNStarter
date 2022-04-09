@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, memo} from 'react';
 import {Control, RegisterOptions, useController} from 'react-hook-form';
 import {TextInputProps, View} from 'react-native';
 import {ReactNativeModalDateTimePickerProps} from 'react-native-modal-datetime-picker';
@@ -208,4 +208,4 @@ function FormInput(props: FormInputProps) {
   }
 }
 
-export default FormInput;
+export default memo(FormInput);

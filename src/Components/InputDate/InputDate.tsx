@@ -20,6 +20,8 @@ import DateTimePickerModal, {
 import moment from 'moment';
 import useThemeValue from 'src/Modules/ThemeModule/Hooks/useThemeValue';
 import Block from 'src/Components/Block/Block';
+import scaler from 'src/Utils/scaler';
+import InputLabel from '../InputLabel/InputLabel';
 
 type InputDateProps = {
   label?: string;
@@ -56,36 +58,34 @@ function InputDate(props: InputDateProps) {
     ? theme.colors.error
     : focus
     ? theme.colors.primary
-    : theme.colors.placeholder;
+    : theme.colors.primary;
   const textColor = errorMessage ? theme.colors.error : theme.colors.text;
-  const borderWidth = focus || errorMessage ? 2 : 1;
+  const borderWidth = focus || errorMessage ? scaler(2) : scaler(1);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
         textInputStyle: {
-          fontSize: 16,
-          paddingHorizontal: 10,
+          fontSize: scaler(15),
+          paddingHorizontal: scaler(15),
           paddingBottom: Platform.OS === 'ios' ? 8.3 / 2 : 0,
           paddingVertical: Platform.OS === 'ios' ? 8.3 / 2 : 0,
           color: textColor,
           textAlignVertical: 'center',
+          ...theme.fonts.medium,
         },
       }),
-    [textColor],
+    [textColor, theme.fonts.medium],
   );
 
   return (
     <Fragment>
-      {label && (
-        <Fragment>
-          <Typography type={'medium'} fontSize={16} color={labelColor}>
-            {label}
-          </Typography>
-          <Block height={8} />
-        </Fragment>
-      )}
+      <InputLabel
+        label={label}
+        focus={focus || errorMessage || field.value}
+        labelColor={labelColor}
+      />
 
       <Pressable
         onPress={() => {
@@ -95,12 +95,17 @@ function InputDate(props: InputDateProps) {
         <View pointerEvents={'none'}>
           <Block
             flexDirection={'row'}
+            variant={'surface'}
             borderWidth={borderWidth}
             borderColor={borderColor}
-            borderRadius={2}
+            height={scaler(56)}
+            borderRadius={scaler(12)}
             overflow="hidden">
             {left}
-            <Block paddingVertical={8} flex={1} justifyContent={'center'}>
+            <Block
+              paddingVertical={scaler(8)}
+              flex={1}
+              justifyContent={'center'}>
               <TextInput
                 {...textInputProps}
                 ref={field.ref}
@@ -120,7 +125,10 @@ function InputDate(props: InputDateProps) {
       </Pressable>
 
       {errorMessage && (
-        <Typography fontSize={12} color={borderColor}>
+        <Typography
+          fontSize={scaler(12)}
+          marginHorizontal={scaler(30)}
+          color={borderColor}>
           {errorMessage}
         </Typography>
       )}
@@ -131,7 +139,15 @@ function InputDate(props: InputDateProps) {
         date={field.value ? new Date(field.value) : undefined}
         onConfirm={date => {
           setDatePickerVisibility(false);
-          field.onChange(date);
+          if (datePickerProps?.maximumDate) {
+            if (datePickerProps.maximumDate.getTime() < date.getTime()) {
+              field.onChange(datePickerProps.maximumDate.toISOString());
+            } else {
+              field.onChange(date.toISOString());
+            }
+          } else {
+            field.onChange(date.toISOString());
+          }
           setFocus(false);
         }}
         onCancel={() => {

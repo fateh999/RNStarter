@@ -1,26 +1,16 @@
-import {useEffect, useState} from 'react';
-import AuthService from '../Services/AuthService';
+import useObservableValue from 'src/Hooks/useObservableValue';
+import authState$, {initialAuthState} from '../Observers/authState$';
 import {AUTH_STATE} from '../Types/CommonTypes';
 
 function useAuthValue() {
-  const [authState, setAuthState] = useState(AuthService.authState$.getValue());
-
-  useEffect(() => {
-    const subscription = AuthService.authState$.subscribe(setAuthState);
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  return authState;
+  return useObservableValue(authState$);
 }
 
 export default useAuthValue;
 
-export const getAuthValue = () => AuthService.authState$.getValue();
+export const getAuthValue = () => authState$.getValue();
 
 export const setAuthValue = (authState: AUTH_STATE) =>
-  AuthService.authState$.next(authState);
+  authState$.next(authState);
 
-export const resetAuthValue = () => AuthService.resetAuthValue();
+export const resetAuthValue = () => setAuthValue(initialAuthState);

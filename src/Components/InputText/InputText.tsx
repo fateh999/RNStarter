@@ -1,4 +1,4 @@
-import React, {Fragment, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import {
   ControllerRenderProps,
   FieldValues,
@@ -8,6 +8,8 @@ import {Platform, StyleSheet, TextInput, TextInputProps} from 'react-native';
 import Block from 'src/Components/Block/Block';
 import Typography from 'src/Components/Typography/Typography';
 import useThemeValue from 'src/Modules/ThemeModule/Hooks/useThemeValue';
+import scaler from 'src/Utils/scaler';
+import InputLabel from '../InputLabel/InputLabel';
 
 type InputTextProps = {
   label?: string;
@@ -32,43 +34,43 @@ function InputText(props: InputTextProps) {
     ? theme.colors.error
     : focus
     ? theme.colors.primary
-    : theme.colors.placeholder;
+    : theme.colors.primary;
   const textColor = errorMessage ? theme.colors.error : theme.colors.text;
-  const borderWidth = focus || errorMessage ? 2 : 1;
+  const borderWidth = focus || errorMessage ? scaler(2) : scaler(1);
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
         textInputStyle: {
-          fontSize: 16,
-          paddingHorizontal: 10,
+          fontSize: scaler(15),
+          paddingHorizontal: scaler(15),
           paddingBottom: Platform.OS === 'ios' ? 8.3 / 2 : 0,
           paddingVertical: Platform.OS === 'ios' ? 8.3 / 2 : 0,
           color: textColor,
           textAlignVertical: 'center',
+          ...theme.fonts.medium,
         },
       }),
-    [textColor],
+    [textColor, theme.fonts.medium],
   );
 
   return (
-    <Fragment>
-      {label && (
-        <Fragment>
-          <Typography type={'medium'} fontSize={16} color={labelColor}>
-            {label}
-          </Typography>
-          <Block height={8} />
-        </Fragment>
-      )}
+    <Block>
+      <InputLabel
+        label={label}
+        focus={focus || errorMessage || field.value}
+        labelColor={labelColor}
+      />
       <Block
         flexDirection={'row'}
         borderWidth={borderWidth}
         borderColor={borderColor}
-        borderRadius={2}
+        borderRadius={scaler(12)}
+        minHeight={scaler(56)}
+        variant={'surface'}
         overflow="hidden">
         {left}
-        <Block paddingVertical={8} flex={1} justifyContent={'center'}>
+        <Block paddingVertical={scaler(8)} flex={1} justifyContent={'center'}>
           <TextInput
             {...textInputProps}
             ref={field.ref}
@@ -83,11 +85,15 @@ function InputText(props: InputTextProps) {
         {right}
       </Block>
       {errorMessage && (
-        <Typography fontSize={12} color={borderColor}>
+        <Typography
+          marginTop={scaler(5)}
+          marginHorizontal={scaler(15)}
+          fontSize={scaler(12)}
+          color={borderColor}>
           {errorMessage}
         </Typography>
       )}
-    </Fragment>
+    </Block>
   );
 }
 

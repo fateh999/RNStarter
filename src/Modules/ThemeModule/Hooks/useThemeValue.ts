@@ -1,26 +1,19 @@
-import {useEffect, useState} from 'react';
-import ThemeService from '../Services/ThemeService';
-import {VARIANT} from '../Types/CommonTypes';
+import useObservableValue from 'src/Hooks/useObservableValue';
+import {DayTheme, NightTheme} from '../Config/Theme';
+import theme$ from '../Observers/theme$';
+import {THEME_TYPE} from '../Types/CommonTypes';
 
 function useThemeValue() {
-  const [theme, setTheme] = useState(ThemeService.theme$.getValue());
-
-  useEffect(() => {
-    const subscription = ThemeService.theme$.subscribe(setTheme);
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
-
-  return theme;
+  return useObservableValue(theme$);
 }
 
 export default useThemeValue;
 
-export const getThemeValue = () => ThemeService.theme$.getValue();
+export const getThemeValue = () => theme$.getValue();
 
-export const toggleTheme = ThemeService.toggleTheme;
+export const setThemeValue = (theme: THEME_TYPE) => theme$.next(theme);
 
-export const getVariantValue = (variant: VARIANT) =>
-  ThemeService.theme$.getValue().colors[variant];
+export const toggleTheme = () => {
+  const {type} = getThemeValue();
+  theme$.next(type === 'dark' ? DayTheme : NightTheme);
+};

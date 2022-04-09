@@ -1,8 +1,18 @@
+import {AxiosResponse} from 'axios';
 import {useQuery} from 'react-query';
-import PostService from '../Services/PostService';
+import {fetcher} from 'src/Utils/Helpers';
+import {POSTS_RESPONSE} from '../Types/ResponseTypes';
+
+export const GET_POSTS_QUERY_KEY = 'getPosts';
+
+const getPosts = (): Promise<AxiosResponse<POSTS_RESPONSE>> => {
+  return fetcher({
+    url: '/posts',
+  });
+};
 
 function usePostsQuery() {
-  return useQuery(PostService.queryKeys.getPosts, PostService.getPosts);
+  return useQuery(GET_POSTS_QUERY_KEY, getPosts);
 }
 
 export default usePostsQuery;
