@@ -4,10 +4,8 @@ import {NightTheme, DayTheme} from '../Config/Theme';
 import {THEME_TYPE} from '../Types/CommonTypes';
 
 const initialColorScheme = Appearance.getColorScheme();
-const theme$ = Object.freeze(
-  new BehaviorSubject<THEME_TYPE>(
-    initialColorScheme === 'dark' ? NightTheme : DayTheme,
-  ),
+const theme$ = new BehaviorSubject<THEME_TYPE>(
+  initialColorScheme === 'dark' ? NightTheme : DayTheme,
 );
 
 export default theme$;

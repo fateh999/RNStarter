@@ -8,12 +8,8 @@ export const initialAuthState: AUTH_STATE = {
   token: '',
 };
 
-const authState$ = Object.freeze(
-  new BehaviorSubject<AUTH_STATE>(initialAuthState),
-);
-const persistStorage = Object.freeze(
-  new PersistStorage('authState', authState$),
-);
+const authState$ = new BehaviorSubject<AUTH_STATE>(initialAuthState);
+const persistStorage = new PersistStorage('authState', authState$);
 persistStorage.init();
 
 export default authState$;

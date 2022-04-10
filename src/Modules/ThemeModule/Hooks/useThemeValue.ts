@@ -1,6 +1,6 @@
 import useObservableValue from 'src/Hooks/useObservableValue';
 import {DayTheme, NightTheme} from '../Config/Theme';
-import theme$ from '../Observers/theme$';
+import theme$ from '../Observables/theme$';
 import {THEME_TYPE} from '../Types/CommonTypes';
 
 function useThemeValue() {

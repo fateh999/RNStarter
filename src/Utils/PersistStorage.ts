@@ -2,18 +2,14 @@ import {BehaviorSubject} from 'rxjs';
 import FastStorage from './FastStorage';
 import RNBootSplash from 'react-native-bootsplash';
 
-class PersistStorage {
-  keyName;
-  observer;
-
-  constructor(keyName: string, observer: Readonly<BehaviorSubject<any>>) {
+class PersistStorage<T> {
+  constructor(private keyName: string, private observer: BehaviorSubject<T>) {
     this.keyName = keyName;
     this.observer = observer;
 
     if (keyName === 'authState') {
       RNBootSplash.hide({fade: true});
     }
-    console.log('PERSIST STORAGE INITIALIZED');
   }
 
   init = async () => {

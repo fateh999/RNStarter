@@ -1,5 +1,5 @@
 import useObservableValue from 'src/Hooks/useObservableValue';
-import authState$, {initialAuthState} from '../Observers/authState$';
+import authState$, {initialAuthState} from '../Observables/authState$';
 import {AUTH_STATE} from '../Types/CommonTypes';
 
 function useAuthValue() {
