@@ -39,6 +39,14 @@ export const DayTheme: THEME_TYPE = {
       fontWeight: '700',
     },
   },
+  spacingSizes: {
+    xs: 4,
+    s: 8,
+    m: 12,
+    l: 16,
+    xl: 20,
+    xxl: 24,
+  },
 };
 
 export const NightTheme: THEME_TYPE = {
@@ -79,5 +87,13 @@ export const NightTheme: THEME_TYPE = {
       fontFamily: 'System',
       fontWeight: '700',
     },
+  },
+  spacingSizes: {
+    xs: 4,
+    s: 8,
+    m: 12,
+    l: 16,
+    xl: 20,
+    xxl: 24,
   },
 };

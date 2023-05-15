@@ -12,7 +12,7 @@ function Touch(props: MotiPressableProps, ref: React.Ref<View>) {
           ({hovered, pressed}) => {
             'worklet';
             return {
-              scale: hovered || pressed ? 0.96 : 1,
+              scale: hovered || pressed ? 0.98 : 1,
             };
           },
         [],
