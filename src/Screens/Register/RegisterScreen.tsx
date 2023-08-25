@@ -1,16 +1,17 @@
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import AppBar from 'src/Components/AppBar/AppBar';
-import Body from 'src/Components/Body/Body';
-import Container from 'src/Components/Container/Container';
-import RegisterForm from 'src/Modules/AuthModule/Components/RegisterForm/RegisterForm';
+import Button from 'src/Components/Button';
+import Container from 'src/Components/Container';
+import Stack from 'src/Components/Stack';
 
 function RegisterScreen() {
+  const navigation = useNavigation();
+
   return (
     <Container>
-      <AppBar title={'Register'} back />
-      <Body>
-        <RegisterForm />
-      </Body>
+      <Stack flex={1} margin={16}>
+        <Button onPress={navigation.goBack}>Back</Button>
+      </Stack>
     </Container>
   );
 }

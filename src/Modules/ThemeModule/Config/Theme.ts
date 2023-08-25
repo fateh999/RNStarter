@@ -10,7 +10,7 @@ export const DayTheme: THEME_TYPE = {
     error: '#e63946',
     text: '#000000',
     onSurface: '#000000',
-    disabled: '#adb5bd',
+    disabled: '#6c757d',
     placeholder: '#6c757d',
     backdrop: 'rgba(0,0,0,0.5)',
     notification: '#ff006e',
@@ -38,6 +38,14 @@ export const DayTheme: THEME_TYPE = {
       fontFamily: 'System',
       fontWeight: '700',
     },
+  },
+  spacingSizes: {
+    xs: 4,
+    s: 8,
+    m: 12,
+    l: 16,
+    xl: 20,
+    xxl: 24,
   },
 };
 
@@ -79,5 +87,13 @@ export const NightTheme: THEME_TYPE = {
       fontFamily: 'System',
       fontWeight: '700',
     },
+  },
+  spacingSizes: {
+    xs: 4,
+    s: 8,
+    m: 12,
+    l: 16,
+    xl: 20,
+    xxl: 24,
   },
 };

@@ -1,17 +1,21 @@
-import MMKVStorage from 'react-native-mmkv-storage';
+import {MMKVLoader} from 'react-native-mmkv-storage';
 
 class FastStorage {
   MMKV;
 
   constructor() {
-    this.MMKV = new MMKVStorage.Loader().initialize();
+    this.MMKV = new MMKVLoader().initialize();
   }
 
-  getItem = (key: string) => this.MMKV.getItem(key);
+  getItem = (key: string) => this.MMKV.getItem(key) as Promise<string>;
 
-  setItem = (key: string, value: string) => this.MMKV.setItem(key, value);
+  setItem = async (key: string, value: string) => {
+    this.MMKV.setItem(key, value);
+  };
 
-  removeItem = (key: string) => this.MMKV.removeItem(key);
+  removeItem = async (key: string) => {
+    this.MMKV.removeItem(key);
+  };
 
   clear = () => this.MMKV.clearStore();
 }

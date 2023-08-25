@@ -1,11 +1,9 @@
-import 'react-native-reanimated';
-import 'react-native-gesture-handler';
-import {AppRegistry} from 'react-native';
-import App from './src/App';
-import {name as appName} from './app.json';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {enableFreeze} from 'react-native-screens';
+/**
+ * @format
+ */
 
-enableFreeze(true);
-MaterialCommunityIcons.loadFont();
+import {AppRegistry} from 'react-native';
+import App from './App';
+import {name as appName} from './app.json';
+
 AppRegistry.registerComponent(appName, () => App);

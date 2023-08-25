@@ -1,15 +1,10 @@
 import Axios, {AxiosRequestConfig} from 'axios';
-import UltimateConfig from 'react-native-ultimate-config';
-import {
-  getAuthValue,
-  resetAuthValue,
-} from 'src/Modules/AuthModule/Hooks/useAuthValue';
 import {PhoneNumberUtil} from 'google-libphonenumber';
-import SnackbarHandler from './SnackbarHandler';
+import UltimateConfig from 'react-native-ultimate-config';
 
 export const fetcher = async (config: AxiosRequestConfig) => {
   const {url, method, data, headers} = config;
-  const {token} = getAuthValue();
+  const {token} = {token: ''};
   return await Axios.request({
     baseURL: UltimateConfig.API_URL,
     url,
@@ -28,10 +23,8 @@ export const onError = (error: any) => {
   if (error?.response) {
     console.log({error: error?.response?.data});
     if (error?.response?.data?.message) {
-      SnackbarHandler.errorToast(error?.response?.data?.message);
     }
     if (error?.response?.status === 401) {
-      resetAuthValue();
     }
   } else {
     console.log({error});
